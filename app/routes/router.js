@@ -34,7 +34,6 @@ router.post("/resultado", validarNotas, (req, res) => {
     res.render("pages/index", { resultado });
 });
 
-
 function validarNotas(req, res, next) {
 
     const nota1 = Number(req.body.nota1);
