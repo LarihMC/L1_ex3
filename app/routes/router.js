@@ -1,47 +1,53 @@
 const express = require("express");
 const router = express.Router();
-const { body, validationResult } = require("express-validator");
 
+const validarSalario = require("./validator");
 
-let dia = "Nao definido";
+router.post("/resultado", validarSalario, (req, res) => {
 
+    const salario = Number(req.body.salario);
 
+    let percentual;
 
+    if (salario <= 1400) {
+        percentual = 15;
+    } else if (salario <= 4500) {
+        percentual = 10;
+    } else if (salario <= 10000) {
+        percentual = 7.5;
+    } else {
+        percentual = 5;
+    }
 
-if (numero == 1){
-     dia = "Domingo";
-} else if (numero == 2){
-     dia = "Segunda-feira";
-} else if (numero == 3){
-     dia ="Terça=feira";
-} else if (numero == 4){
-     dia = "Quarta-feira";
-} else if ( numero == 5){
-     dia = "Quinta-feira";
-} else if (numero == 6){
-     dia = "Sexta-feira";
-} else if (numero == 7){
-     dia = "Sábado";
-}
+    const aumento = salario * (percentual / 100);
+    const novoSalario = salario + aumento;
 
-let obJson = {dia};
+    const resultado = {
+        salario: salario.toFixed(2),
+        percentual: percentual,
+        aumento: aumento.toFixed(2),
+        novoSalario: novoSalario.toFixed(2)
+    };
 
-res.render("pages/index", {
-     resultado: objJson
+    res.render("pages/index", { resultado });
 });
 
-router.post("/dia",
-     body("numero").isInt({
-     min: 1, max: 7
-}),  (req, res) => {
 
-        const listaErros = validationResult(req);
-        if (listaErros.isEmpty()){
-          let numero = parseInt(req.body.numero);
-        } else{
-          
-        }
+
+function validarSalario(req, res, next) {
+
+    const salario = Number(req.body.salario);
+
+    if (isNaN(salario)) {
+        return res.send("Digite um salário válido!");
+    }
+
+    if (salario <= 0) {
+        return res.send("O salário deve ser maior que zero!");
+    }
+
+    next();
 }
-);
 
 module.exports = router;
+module.exports = validarSalario;

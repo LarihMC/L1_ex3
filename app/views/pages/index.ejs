@@ -1,19 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista 1 Exercício 1</title>
-    <link rel="stylesheet" href="css/estilo.css">
+    <title>Reajuste Salarial</title>
 </head>
+
 <body>
 
-    <form action="/dia" method="post">
-        <input type="text" name="numero">
-        <button type="submit">Verificar</button>
-   </form>
-    <h1>Dias da Semana</h1>
-    
-    <h2>Dia: <%= resultado.dia %></h2>
+    <h2>Reajuste Salarial</h2>
+
+    <form action="/resultado" method="POST">
+
+        <label for="salario">Salário atual:</label>
+        <input type="number" name="salario" id="salario" step="0.01">
+
+        <button type="submit">Calcular</button>
+
+    </form>
+
+    <% if (typeof resultado !== "undefined") { %>
+
+        <h3>Resultado</h3>
+
+        <p>Salário antes do reajuste: R$ <%= resultado.salario %></p>
+
+        <p>Percentual de aumento: <%= resultado.percentual %>%</p>
+
+        <p>Valor do aumento: R$ <%= resultado.aumento %></p>
+
+        <p>Novo salário: R$ <%= resultado.novoSalario %></p>
+
+    <% } else { %>
+
+        <p>Digite seu salário para calcular o reajuste.</p>
+
+    <% } %>
+
 </body>
 </html>
