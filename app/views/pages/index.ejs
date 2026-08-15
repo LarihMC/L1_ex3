@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reajuste Salarial</title>
+    <title>Média do Aluno</title>
 </head>
 
 <body>
 
-    <h2>Reajuste Salarial</h2>
+    <h2>Média do Aluno</h2>
 
     <form action="/resultado" method="POST">
 
-        <label for="salario">Salário atual:</label>
-        <input type="number" name="salario" id="salario" step="0.01">
+        <label for="nota1">Primeira nota:</label>
+        <input type="number" name="nota1" id="nota1" step="0.1">
+
+        <br><br>
+
+        <label for="nota2">Segunda nota:</label>
+        <input type="number" name="nota2" id="nota2" step="0.1">
+
+        <br><br>
 
         <button type="submit">Calcular</button>
 
@@ -23,17 +30,14 @@
 
         <h3>Resultado</h3>
 
-        <p>Salário antes do reajuste: R$ <%= resultado.salario %></p>
-
-        <p>Percentual de aumento: <%= resultado.percentual %>%</p>
-
-        <p>Valor do aumento: R$ <%= resultado.aumento %></p>
-
-        <p>Novo salário: R$ <%= resultado.novoSalario %></p>
+        <p>Primeira nota: <%= resultado.nota1 %></p>
+        <p>Segunda nota: <%= resultado.nota2 %></p>
+        <p>Média: <%= resultado.media %></p>
+        <p>Conceito: <%= resultado.conceito %></p>
 
     <% } else { %>
 
-        <p>Digite seu salário para calcular o reajuste.</p>
+        <p>Digite as duas notas para calcular a média.</p>
 
     <% } %>
 

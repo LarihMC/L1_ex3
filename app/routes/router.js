@@ -1,53 +1,55 @@
 const express = require("express");
 const router = express.Router();
 
-const validarSalario = require("./validator");
+const validarNotas = require("./validator");
 
-router.post("/resultado", validarSalario, (req, res) => {
+router.post("/resultado", validarNotas, (req, res) => {
 
-    const salario = Number(req.body.salario);
+    const nota1 = Number(req.body.nota1);
+    const nota2 = Number(req.body.nota2);
 
-    let percentual;
+    const media = (nota1 + nota2) / 2;
 
-    if (salario <= 1400) {
-        percentual = 15;
-    } else if (salario <= 4500) {
-        percentual = 10;
-    } else if (salario <= 10000) {
-        percentual = 7.5;
+    let conceito;
+
+    if (media > 9.0 && media <= 10.0) {
+        conceito = "A";
+    } else if (media > 7.5 && media <= 9.0) {
+        conceito = "B";
+    } else if (media > 6.0 && media <= 7.5) {
+        conceito = "C";
+    } else if (media > 4.0 && media <= 6.0) {
+        conceito = "D";
     } else {
-        percentual = 5;
+        conceito = "E";
     }
 
-    const aumento = salario * (percentual / 100);
-    const novoSalario = salario + aumento;
-
     const resultado = {
-        salario: salario.toFixed(2),
-        percentual: percentual,
-        aumento: aumento.toFixed(2),
-        novoSalario: novoSalario.toFixed(2)
+        nota1: nota1,
+        nota2: nota2,
+        media: media.toFixed(2),
+        conceito: conceito
     };
 
     res.render("pages/index", { resultado });
 });
 
 
+function validarNotas(req, res, next) {
 
-function validarSalario(req, res, next) {
+    const nota1 = Number(req.body.nota1);
+    const nota2 = Number(req.body.nota2);
 
-    const salario = Number(req.body.salario);
-
-    if (isNaN(salario)) {
-        return res.send("Digite um salário válido!");
+    if (isNaN(nota1) || isNaN(nota2)) {
+        return res.send("Digite notas válidas!");
     }
 
-    if (salario <= 0) {
-        return res.send("O salário deve ser maior que zero!");
+    if (nota1 < 0 || nota1 > 10 || nota2 < 0 || nota2 > 10) {
+        return res.send("As notas devem estar entre 0 e 10!");
     }
 
     next();
 }
 
 module.exports = router;
-module.exports = validarSalario;
+module.exports = validarNotas;
